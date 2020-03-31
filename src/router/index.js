@@ -1,27 +1,37 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Login from '../admin/login'
+import Home from '../admin/home/home'
+import User from '../admin/user/user'
+import Rights from '../admin/rights/rights'
+import Roles from '../admin/rights/roles'
+import Goods from '../admin/products/Goods'
+import Add from '../admin/products/Add'
+import Categories from '../admin/products/categories'
+
+// const Login = () => (/* webpackChunkName: 'index' */ '../admin/login')
+
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+
 
 const router = new VueRouter({
-  routes
+  routes: [
+    { path: '/', redirect: 'login' },
+    { path: '/login', component: Login, name: 'login' },
+    {
+      path: '/index', component: Home, name: 'index', children: [
+        { path: '/users', component: User, name: 'user' },
+        { path: '/rights', component: Rights, name: 'rights' },
+        { path: '/roles', component: Roles, name: 'roles' },
+        { path: '/goods', component: Goods, name: 'goods' },
+        { path: '/goods-add', component: Add, name: 'goods-add' },
+        { path: '/categories', component: Categories, name: 'categories' }
+      ]
+    }
+  ]
 })
 
+// 默认导出路由
 export default router
