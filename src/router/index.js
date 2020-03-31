@@ -25,7 +25,7 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
-    { path: '/', redirect: 'login' },
+    { path: '/', redirect: 'index' },
     { path: '/login', component: Login, name: 'login' },
     {
       path: '/index', component: Home, name: 'index', children: [
@@ -38,6 +38,22 @@ const router = new VueRouter({
       ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  // 路由拦截
+  // from从哪里来
+  // to到哪去
+  // next() 放行
+  // console.log(to, from)
+  // 只要不是去 Login 登录页 就判断是否带有token
+  // 先拿到 token 
+  const token = localStorage.getItem('token')
+  if (to.path === '/login' || token) {
+    next()
+  } else {
+    next('/login')
+  }
 })
 
 // 默认导出路由
